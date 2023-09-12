@@ -89,6 +89,58 @@ namespace SecretWordConsole
 
             return definition[1];
         }
+
+        public char[] CreateBlanks(int wordLenght)
+        {
+            char[] blanks = new char[wordLenght];
+          
+            for (int i = 0; i < blanks.Length; i++)
+            {
+                blanks[i] = '_';
+            }
+
+            return blanks;
+        }
+
+        public async Task Play()
+        {
+            WordInfo wordInfo = await RequestWordAndDefinition();
+
+            Console.WriteLine();
+
+            char[] blanks = CreateBlanks(wordInfo.Word.Length);
+
+            char[] secretWordLettersArray = wordInfo.Word.ToCharArray();
+
+            do
+            {
+                Console.WriteLine($"\nDigite uma palavra. ({blanks.Length} letras) - Digite 1 para dica");
+                Console.WriteLine(blanks);
+                string userInput = Console.ReadLine();
+
+                if (userInput == "1")
+                {
+                    Console.WriteLine("Dica: " + wordInfo.Definition);
+                }
+                else if (userInput.Length != blanks.Length)
+                {
+                    Console.WriteLine("Tamanho de palavra inválido");
+                }
+                else
+                {
+                    char[] userInputToArray = userInput.ToCharArray();
+
+                    for (int i = 0; i < secretWordLettersArray.Length; i++)
+                    {
+                        if (char.ToUpper(userInputToArray[i]) == char.ToUpper(secretWordLettersArray[i]))
+                        {
+                            blanks[i] = char.ToUpper(userInputToArray[i]);
+                        }
+                    }
+                    Console.WriteLine(blanks);
+                }
+            } while (blanks.Contains('_'));
+        }
     }
 }
 

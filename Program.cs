@@ -29,50 +29,12 @@ namespace SecretWordConsole
                     case "1":
                         Console.WriteLine("||============================== CARREGANDO... ================================||");
 
-                        WordInfo wordInfo = await new SecretWordMethods().RequestWordAndDefinition();
+                        SecretWordMethods secretWordMethods = new SecretWordMethods();
 
-                        Console.WriteLine();
-
-                        char[] blanks = new char[wordInfo.Word.Length];
-                        for(int i = 0; i< blanks.Length; i++)
-                        {
-                            blanks[i] = '_';
-                        }
-
-                        char[] secretWordLettersArray = wordInfo.Word.ToCharArray();
-
-                        do
-                        {
-                            Console.WriteLine($"\nDigite uma palavra. ({blanks.Length} letras) - Digite 1 para dica");
-                            Console.WriteLine(blanks);
-                            string userInput = Console.ReadLine();
-
-                            if(userInput == "1")
-                            {
-                                Console.WriteLine("Dica: " + wordInfo.Definition);
-                            }
-                            else if (userInput.Length != blanks.Length)
-                            {
-                                Console.WriteLine("Tamanho de palavra inválido");
-                            }
-                            else
-                            {
-                                char[] userInputToArray = userInput.ToCharArray();
-
-                                for (int i = 0; i < secretWordLettersArray.Length; i++)
-                                {
-                                    if (char.ToUpper(userInputToArray[i]) == char.ToUpper(secretWordLettersArray[i]))
-                                    {
-                                        blanks[i] = char.ToUpper(userInputToArray[i]);
-                                    }
-                                }
-                                Console.WriteLine(blanks);
-                            }
-                        } while (blanks.Contains('_'));
+                        await secretWordMethods.Play();
 
                         Console.WriteLine("\nParabéns, você acertou a palavra...\nVocê será redirecionado ao menu principal, pressione qualquer tecla para continuar...");
                         Console.ReadKey();
-
                         break;
 
                     case "2":
@@ -81,12 +43,14 @@ namespace SecretWordConsole
                         Console.WriteLine("\nPressione Enter para voltar ao menu...");
                         Console.ReadKey();
                         break;
+
                     case "3":
                         Console.Clear();
                         Console.WriteLine("\nAgradecimento especial ao meu amigo Reinaldo, que propôs a ideia");
                         Console.WriteLine("\nPressione Enter para voltar ao menu...");
                         Console.ReadKey();
                         break;
+
                     case "4":
                         break;
                     default:
